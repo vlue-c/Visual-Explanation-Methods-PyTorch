@@ -89,9 +89,9 @@ class InsertDelete(Dataset):
         return current.view_as(self.image)
 
 
-class _IDGame(torch.nn.Module):
+class CausalMetric(torch.nn.Module):
     def __init__(self, model, pixel_size, distort_function,
-                 batch_size=-1):
+                 descending, insert, batch_size=-1):
         super().__init__()
         self.pixel_size = pixel_size
         self.batch_size = batch_size
@@ -160,3 +160,24 @@ class _IDGame(torch.nn.Module):
         splited = confidences.split(slicer)
         return torch.stack(splited)
     forward = _forward
+
+
+class InsertionGame(CausalMetric):
+    def __init__(self, model, pixel_size, batch_size=-1,
+                 distort_function=BlurDistoration(11, 5)):
+        super().__init__(model, pixel_size, distort_function, descending=True,
+                         insert=True, batch_size=batch_size)
+
+
+class DeletionGame(CausalMetric):
+    def __init__(self, model, pixel_size, batch_size=-1,
+                 distort_function=torch.zeros_like):
+        super().__init__(model, pixel_size, distort_function, descending=True,
+                         insert=False, batch_size=batch_size)
+
+
+class PreservationGame(CausalMetric):
+    def __init__(self, model, pixel_size, batch_size=-1,
+                 distort_function=torch.zeros_like):
+        super().__init__(model, pixel_size, distort_function, descending=False,
+                         insert=False, batch_size=batch_size)
