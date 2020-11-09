@@ -1,6 +1,5 @@
 from numbers import Number
 import math
-import bisect
 
 from scipy.ndimage.filters import gaussian_filter
 
@@ -100,7 +99,7 @@ class _IDGame(torch.nn.Module):
         self.model = model
 
     @torch.no_grad()
-    def forward(self, inputs, explanations, target=None):
+    def _forward(self, inputs, explanations, target=None):
         if inputs.ndim == 2:
             inputs = inputs[None]
         if inputs.ndim == 3:
@@ -160,3 +159,4 @@ class _IDGame(torch.nn.Module):
         confidences = torch.cat(confidences)
         splited = confidences.split(slicer)
         return torch.stack(splited)
+    forward = _forward
