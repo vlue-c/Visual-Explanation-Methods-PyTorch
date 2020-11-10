@@ -25,7 +25,8 @@ class GradCAM(_CAMBase):
             _, target = output.max(1)[1]
         if isinstance(target, Number):
             target = [target]
-        target = torch.tensor(target)
+        if not isinstance(target, torch.Tensor):
+            target = torch.tensor(target)
 
         onehot = index_to_onehot(target, output.shape[-1])
         loss = (output * onehot).sum()
