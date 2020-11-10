@@ -97,6 +97,8 @@ class CausalMetric(torch.nn.Module):
         self.batch_size = batch_size
         self.distort_fn = distort_function
         self.model = model
+        self.descending = descending
+        self.insert = insert
 
     @torch.no_grad()
     def _forward(self, inputs, explanations, target=None):
@@ -120,7 +122,8 @@ class CausalMetric(torch.nn.Module):
         generators = []
         for x, e in zip(inputs, explanations):
             generators.append(
-                InsertDelete(x, e, self.pixel_size, self.distort_fn)
+                InsertDelete(x, e, self.pixel_size, self.distort_fn,
+                             self.descending, self.insert)
             )
         generator = ConcatDataset(generators)
         batch_size = self.batch_size
