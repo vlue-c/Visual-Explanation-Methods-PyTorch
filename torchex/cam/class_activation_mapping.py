@@ -18,7 +18,8 @@ class CAM(_CAMBase):
             _, target = output.max(1)
         if isinstance(target, Number):
             target = [target]
-        target = torch.tensor(target)
+        if not isinstance(target, torch.Tensor):
+            target = torch.tensor(target)
 
         weight = self.fc.weight
 

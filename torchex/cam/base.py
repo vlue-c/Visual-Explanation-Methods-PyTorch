@@ -11,6 +11,8 @@ class _CAMBase(torch.nn.Module):
         self._interpolate = interpolate
 
     def interpolate(self, cam, shape):
+        if cam.ndim == 3:
+            cam.unsqueeze_(0)
         return torch.nn.functional.interpolate(
             cam, shape, mode='bilinear', align_corners=True
         )
@@ -27,14 +29,17 @@ class _CAMBase(torch.nn.Module):
         return self.create_cam(inputs, target)
 
     @torch.no_grad()
-    def _forward(self, inputs, target):
+    def _forward(self, inputs, target=None):
+        if target is None:
+            target = self.model(inputs).max(1)[1]
         if self.create_graph:
-            res = self.enable_grad_forward(inputs, target)
-        res = self.no_grad_forward(inputs, target)
+            results = self.enable_grad_forward(inputs, target)
+        results = self.no_grad_forward(inputs, target)
 
         if self._interpolate:
-            res = self.interpolate(res, inputs.shape[-1])
+            results = [self.interpolate(result, inputs.shape[-1])
+                       for result in results]
 
-        return res
+        return torch.cat(results)
 
     forward = _forward

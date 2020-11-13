@@ -41,4 +41,4 @@ class GradCAM(_CAMBase):
             grad_cam = torch.nn.functional.relu(
                 grad_cam.sum(dim=1, keepdim=True))
             grad_cams.append(grad_cam)
-        return torch.cat(grad_cams)
+        return grad_cams
