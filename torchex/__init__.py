@@ -2,4 +2,4 @@ from . import cam
 from . import utils
 from . import metrics
 from . import simple_grad
-from .deeplift import DeepLift
+from . import contrib
