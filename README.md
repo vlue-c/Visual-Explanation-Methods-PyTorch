@@ -17,7 +17,7 @@ python setup.py install
 - ***TBD***
 
 optional
-- captum (for now. for DeepLift)
+- [captum](https://captum.ai/) (for now. for DeepLift)
 
 ---
 
