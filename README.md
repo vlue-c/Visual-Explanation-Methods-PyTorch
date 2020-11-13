@@ -2,6 +2,23 @@
 
 ## Re-implemented model explanation method codes for PyTorch.
 
+
+## Usage
+
+```sh
+pip install -r requirements.txt
+python setup.py install
+```
+
+## requirements
+
+- pytorch >= 1.7 (finally torch.quantile)
+- tqdm
+- ***TBD***
+
+optional
+- captum (for now. for DeepLift)
+
 ---
 
 ## Class Activation Mapping based Methods
