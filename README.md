@@ -28,7 +28,7 @@ cam = cam_generator(image, target)
 
 - **Grad**ient-weighted **C**lass **A**ctivation **M**apping(*Grad-CAM*)
   - paper (*ICCV* 2017): [Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization](https://openaccess.thecvf.com/content_iccv_2017/html/Selvaraju_Grad-CAM_Visual_Explanations_ICCV_2017_paper.html)
-  - original source code: <u>TBD</u>
+  - original source code: ***TBD***
 
 Example:
 ```python
@@ -63,7 +63,7 @@ simgrad = simgrad_generator(image, target)
 ## DeepLift
 
 - **Deep** **L**earning **I**mportant **F**ea**T**ures
-  - <u>For now, it is just a wrapper class of the  [`captum`](https://captum.ai/)`.attr.DeepLift`</u>
+  - ***For now, it is just a wrapper class of the  [`captum`](https://captum.ai/)`.attr.DeepLift`***
   - paper (*arXiv preprint* 2017):
   [Learning Important Features Through Propagating Activation Differences](https://arxiv.org/abs/1704.02685)
   - original source code: https://github.com/kundajelab/deeplift
