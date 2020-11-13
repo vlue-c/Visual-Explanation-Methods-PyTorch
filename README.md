@@ -1,9 +1,3 @@
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    displayAlign: "center"
-});
-</script>
-
 # PyTorch-Explanations
 
 ## Re-implemented model explanation method codes for PyTorch.
@@ -23,6 +17,7 @@ MathJax.Hub.Config({
 
 - Simple gradient method:
 
-  $$\frac{\partial M(x)_{c}}{\partial x}$$ 
+  - ![](https://latex.codecogs.com/gif.download?%5Cfrac%7B%5Cpartial%20M%28x%29_%7Bc%7D%7D%7B%5Cpartial%20x%7D)
+  - where *M* is model, *c* is target class, *x* is input.
 
 
