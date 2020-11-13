@@ -6,11 +6,9 @@ from .hook import FeatureFetcher
 
 
 class CAM(_CAMBase):
-    def __init__(self, model, target_layer, fc_layer=None, create_graph=False, interpolate=True):
+    def __init__(self, model, target_layer, fc_layer, create_graph=False, interpolate=True):
         super().__init__(model, target_layer, create_graph, interpolate)
         self.fc = fc_layer
-        if fc_layer is None:
-            self.fc = fc_layer
 
     def create_cam(self, inputs, target=None):
         with FeatureFetcher(self.target_layer) as fetcher:
