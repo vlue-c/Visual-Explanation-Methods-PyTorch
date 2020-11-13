@@ -19,3 +19,8 @@
 where *M* is model, *c* is target class, *x* is input.
 
 
+## DeepLift
+
+- For now it is constructed as a wrapper class of the  [`captum`](https://captum.ai/)`.attr.DeepLift`
+- paper (*arXiv preprint* 2017): https://arxiv.org/abs/1704.02685
+- original source code: https://github.com/kundajelab/deeplift
