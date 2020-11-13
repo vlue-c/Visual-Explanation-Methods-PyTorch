@@ -14,10 +14,8 @@
   - original source code: <u>TBD</u>
 
 ## Simple Gradient
+![](https://latex.codecogs.com/gif.latex?%5Cfrac%7B%5Cpartial%20M%28x%29_%7Bc%7D%7D%7B%5Cpartial%20x%7D)
 
-- Simple gradient method:
-
-  - ![](https://latex.codecogs.com/gif.latex?%5Cfrac%7B%5Cpartial%20M%28x%29_%7Bc%7D%7D%7B%5Cpartial%20x%7D)
-  - where *M* is model, *c* is target class, *x* is input.
+where *M* is model, *c* is target class, *x* is input.
 
 
