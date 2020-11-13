@@ -1,2 +1,2 @@
-from .class_activation_mapping import CAM
-from .gradient_weighted_class_activation_mapping import GradCAM
+from .cam import CAM
+from .grad_cam import GradCAM
