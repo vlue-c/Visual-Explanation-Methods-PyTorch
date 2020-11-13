@@ -35,9 +35,13 @@ Example:
 from torchex import GradCAM
 model = ...
 grad_cam_generator = GradCAM(model, target_layer=model.layer4)
+multil_layer_gcamgen = GradCAM(model, target_layer=[model.layer3, model.layer4])
 
 grad_cam = grad_cam_generator(image)
 grad_cam = grad_cam_generator(image, target)
+
+multiple_grad_cam = multil_layer_gcamgen(image)
+# multiple_grad_cam.shape: torch.Size(2, 1, image.size(-2), image.size(-1))
 ```
 
 ## Simple Gradient
