@@ -12,7 +12,7 @@
 Expample: 
 ```python
 from torchvision.models import resnet50
-from torchex.cam import CAM
+from torchex import CAM
 
 # in case of torchvision.models.resnet,
 # the output of the model.layer4 is equals to
@@ -32,7 +32,7 @@ cam = cam_generator(image, target)
 
 Example:
 ```python
-from torchex.cam import GradCAM
+from torchex import GradCAM
 model = ...
 grad_cam_generator = GradCAM(model, target_layer=model.layer4)
 
@@ -47,7 +47,7 @@ grad_cam = grad_cam_generator(image, target)
 
 Example:
 ```python
-from torchex.saimple_grad import SimpleGradient
+from torchex import SimpleGradient
 
 def normalize_gradient(gradient):
   nbatchs, nchannels, w, h = gradient.shape
@@ -76,7 +76,7 @@ simgrad = simgrad_generator(image, target)
 
 Example:
 ```python
-from torchex.rise import RISE
+from torchex import RISE
 
 model = ...
 rise_generator = RISE(model, num_masks=8000, cell_size=7,

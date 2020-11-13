@@ -1,5 +1,7 @@
-from . import cam
+from .cam import CAM, GradCAM
+from .simple_grad import SimpleGradient
+from .rise import RISE
+
 from . import utils
 from . import metrics
-from . import simple_grad
 from . import contrib
