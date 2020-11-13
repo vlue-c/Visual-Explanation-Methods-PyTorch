@@ -41,7 +41,7 @@ grad_cam = grad_cam_generator(image)
 grad_cam = grad_cam_generator(image, target)
 
 multiple_grad_cam = multil_layer_gcamgen(image)
-# multiple_grad_cam.shape: torch.Size(2, 1, image.size(-2), image.size(-1))
+# multiple_grad_cam.shape: torch.Size([2, 1, image.size(-2), image.size(-1)])
 ```
 
 ## Simple Gradient
