@@ -1,3 +1,9 @@
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    displayAlign: "center"
+});
+</script>
+
 # PyTorch-Explanations
 
 ## Re-implemented model explanation method codes for PyTorch.
@@ -12,5 +18,11 @@
 - Gradient-weighted Class Activation Mapping(*Grad-CAM*)
   - paper (*ICCV* 2017): https://openaccess.thecvf.com/content_iccv_2017/html/Selvaraju_Grad-CAM_Visual_Explanations_ICCV_2017_paper.html
   - original source code: <u>TBD</u>
+
+## Simple Gradient
+
+- Simple gradient method:
+
+  $$\frac{\partial M(x)_{c}}{\partial x}$$ 
 
 
