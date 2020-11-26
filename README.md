@@ -79,6 +79,8 @@ multiple_grad_cam = multil_layer_gcamgen(image)
 # multiple_grad_cam.shape: torch.Size([2, 1, image.size(-2), image.size(-1)])
 ```
 
+---
+
 ## Simple Gradient
 - ![](https://latex.codecogs.com/svg.latex?SimpleGradient=\frac{\partial%20M(x)_c}{\partial%20x})
 
@@ -106,6 +108,8 @@ simgrad = simgrad_generator(image)
 simgrad = simgrad_generator(image, target)
 ```
 
+---
+
 ## DeepLift
 
 - **Deep** **L**earning **I**mportant **F**ea**T**ures
@@ -113,6 +117,8 @@ simgrad = simgrad_generator(image, target)
   - paper (*arXiv preprint* 2017):
   [Learning Important Features Through Propagating Activation Differences](https://arxiv.org/abs/1704.02685)
   - original source code: https://github.com/kundajelab/deeplift
+
+---
 
 ## RISE
 
@@ -138,6 +144,8 @@ rise_generator = RISE(model, num_masks=8000, cell_size=7,
 rise = rise_generator(image)
 rise = rise_generator(image, target)
 ```
+
+---
 
 ## Meaningful Perturbation
 - Interpretable Explanations of Black Boxes by **Meaningful Perturbation**
@@ -178,4 +186,35 @@ mp_generator = MeaningfulPerturbation(model, normalization)
 
 mp = mp_generator(image)
 mp = mp_generator(image, target)
+```
+
+---
+
+## SmoothGrad
+- **SmoothGrad**
+  - ***not VERIFIED***
+  - paper (*arXiv preprint*): [SmoothGrad: removing noise by adding noise](https://arxiv.org/abs/1706.03825)
+  - original source code: https://github.com/pair-code/saliency
+
+| functionality | progress |
+| --- | --- |
+| `Higher order derivative` | :boom::computer::boom: |
+| `Batch processing` | :heavy_check_mark: |
+| `Post processing` | :heavy_check_mark: |
+| `Pre processing` | :heavy_check_mark: |
+
+Example:
+```python
+from torchex import SmoothGradient
+from torchex.utils import min_max_normalization
+
+def postprocess(gradient):
+    gradient = gradient.abs().sum(1, keepdim=True)
+    gradient = min_max_normalization(gradient, dim=(1, 2, 3), q=0.99)
+    return gradient
+
+smoothgrad_gen = SmoothGradient(model, postprocess=postprocess)
+
+smoothg = smoothgrad_gen(image)
+smoothg = smoothgrad_gen(image, target)
 ```
