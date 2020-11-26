@@ -3,4 +3,6 @@ from .normalization import min_max_normalization
 from .normalization import denormalize
 from .progress_bar import DummyPbar
 
+from . import dataset
+
 from .common import auc
