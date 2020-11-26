@@ -1,18 +1,20 @@
 import torch
 
+from torchex.base import ExplanationMethod
 
-class SimpleGradient(torch.nn.Module):
-    def __init__(self, model, create_graph=False, post_process=None):
-        super().__init__()
+
+class SimpleGradient(ExplanationMethod):
+    def __init__(self, model, create_graph=False,
+                 preprocess=None, postprocess=None):
+        super().__init__(preprocess, postprocess)
         self.model = model
         self.create_graph = create_graph
-        self.post_process = post_process
 
     def predict(self, x):
         return self.model(x)
 
     @torch.enable_grad()
-    def _forward(self, inputs, target=None):
+    def process(self, inputs, target=None):
         self.model.zero_grad()
         inputs.requires_grad_(True)
 
@@ -29,8 +31,4 @@ class SimpleGradient(torch.nn.Module):
             (out*onehot).sum(), inputs, create_graph=self.create_graph
         )
 
-        if self.post_process is not None:
-            grad = self.post_process(grad)
         return grad
-
-    forward = _forward

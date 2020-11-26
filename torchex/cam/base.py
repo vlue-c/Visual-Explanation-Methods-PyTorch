@@ -1,9 +1,12 @@
 import torch
 
+from torchex.base import ExplanationMethod
 
-class _CAMBase(torch.nn.Module):
-    def __init__(self, model, target_layer, create_graph=False, interpolate=True):
-        super().__init__()
+
+class _CAMBase(ExplanationMethod):
+    def __init__(self, model, target_layer, create_graph=False,
+                 interpolate=True, preprocess=None, postprocess=None):
+        super().__init__(preprocess, postprocess)
         self.model = model
         self.target_layer = target_layer
 
@@ -29,7 +32,7 @@ class _CAMBase(torch.nn.Module):
         return self.create_cam(inputs, target)
 
     @torch.no_grad()
-    def _forward(self, inputs, target=None):
+    def process(self, inputs, target=None):
         if target is None:
             target = self.model(inputs).max(1)[1]
         if self.create_graph:
@@ -40,6 +43,6 @@ class _CAMBase(torch.nn.Module):
             results = [self.interpolate(result, inputs.shape[-1])
                        for result in results]
 
-        return torch.cat(results)
-
-    forward = _forward
+        if all(results[0].shape == result.shape for result in results):
+            return torch.cat(results)
+        return results

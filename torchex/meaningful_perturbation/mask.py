@@ -4,6 +4,7 @@ from torch.nn.functional import interpolate
 from torchvision.transforms.functional import gaussian_blur
 
 from torchex.utils import denormalize
+from torchex.base import ExplanationMethod
 
 
 def gaussian_filter(image, sigma=10, truncate=4.0):
@@ -38,11 +39,12 @@ def total_variation(inputs, beta=1):
     return dh.abs().pow(beta).sum() + dw.abs().pow(beta).sum()
 
 
-class MeaningfulPerturbation(torch.nn.Module):
-    def __init__(self, model, normalize_transform=None, num_iters=300, lr=1e-1,
+class MeaningfulPerturbation(ExplanationMethod):
+    def __init__(self, model, normalize_transform=None,
+                 preprocess=None, postprocess=None, num_iters=300, lr=1e-1,
                  l1_lambda=1e-4, jitter=4, tv_beta=3, tv_lambda=1e-2,
                  mask_scale=8, noise=0, blur_mask_sigma=5, blur_image_sigma=10):
-        super().__init__()
+        super().__init__(preprocess, postprocess)
         self.model = model
         self.niters = num_iters
         self.lr = lr
@@ -83,7 +85,7 @@ class MeaningfulPerturbation(torch.nn.Module):
         initial_mask.clamp_(0, 1)
         return 1 - initial_mask
 
-    def _forward(self, inputs, target=None):
+    def process(self, inputs, target=None):
         if target is None:
             target = self.model(inputs).argmax(1)
 
@@ -159,5 +161,3 @@ class MeaningfulPerturbation(torch.nn.Module):
         if self.blur_sigma > 0:
             mask = gaussian_filter(mask, self.blur_sigma)
         return 1 - mask.data
-
-    forward = _forward

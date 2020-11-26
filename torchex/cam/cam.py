@@ -6,8 +6,10 @@ from .hook import FeatureFetcher
 
 
 class CAM(_CAMBase):
-    def __init__(self, model, target_layer, fc_layer, create_graph=False, interpolate=True):
-        super().__init__(model, target_layer, create_graph, interpolate)
+    def __init__(self, model, target_layer, fc_layer, create_graph=False,
+                 interpolate=True, preprocess=None, postprocess=None):
+        super().__init__(model, target_layer, create_graph, interpolate,
+                         preprocess, postprocess)
         self.fc = fc_layer
 
     def create_cam(self, inputs, target=None):
@@ -19,7 +21,7 @@ class CAM(_CAMBase):
         if isinstance(target, Number):
             target = [target]
         if not isinstance(target, torch.Tensor):
-            target = torch.tensor(target)
+            target = torch.as_tensor(target)
 
         weight = self.fc.weight
 
