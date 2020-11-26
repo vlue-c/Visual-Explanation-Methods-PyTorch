@@ -3,6 +3,8 @@ import torch
 from torch.nn.functional import interpolate
 from torchvision.transforms.functional import gaussian_blur
 
+from torchex.utils import denormalize
+
 
 def gaussian_filter(image, sigma=10, truncate=4.0):
     radius = int(truncate * sigma + 0.5) * 2 + 1
@@ -55,13 +57,6 @@ class MeaningfulPerturbation(torch.nn.Module):
 
         self.norm = normalize_transform
 
-    def denormalize(self, x):
-        mean = torch.as_tensor(
-            self.norm.mean, device=x.device, dtype=x.dtype).view(1, 3, 1, 1)
-        std = torch.as_tensor(
-            self.norm.std, device=x.device, dtype=x.dtype).view(1, 3, 1, 1)
-        return x * std + mean
-
     def _initialize_mask(self, image, blurred_image, target):
         original_score = self.model(image)[0, target]
         masks = make_blurred_circular_mask(image)
@@ -94,7 +89,7 @@ class MeaningfulPerturbation(torch.nn.Module):
 
         if self.norm is not None:
             blurred_inputs = self.norm(gaussian_filter(
-                self.denormalize(inputs), self.sd
+                denormalize(inputs, self.norm.mean, self.norm.std), self.sd
             ))
         else:
             blurred_inputs = gaussian_filter(inputs, self.sd)
