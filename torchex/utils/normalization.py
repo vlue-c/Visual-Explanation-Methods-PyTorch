@@ -25,6 +25,22 @@ def min_max_normalization(data, dim=None, q=(0, 1)):
 
 
 def denormalize(data, mean, std):
-    mean = torch.tensor(mean).expand_as(data)
-    std = torch.tensor(std).expand_as(data)
-    return data * std + mean
+    ndim_before = data.ndim
+    if ndim_before not in (3, 4):
+        raise ValueError(f'data.ndim should in (3, 4). not {ndim_before}')
+    if ndim_before == 3:
+        data = data.unsqueeze(0)
+    _, nchannels, _, _ = data.size()
+    if not all(nchannels == len(static) for static in (mean, std)):
+        raise ValueError('size does not match. '
+                         f'channel size of data: {nchannels}, '
+                         f'len(mean): {len(mean)}, '
+                         f'len(std): {len(std)}.')
+    mean = torch.as_tensor(mean, device=data.device, dtype=data.dtype)
+    std = torch.as_tensor(std, device=data.device, dtype=data.dtype)
+    mean, std = mean.view(1, nchannels, 1, 1), std.view(1, nchannels, 1, 1)
+
+    out = data * std + mean
+    if ndim_before == 3:
+        out = out.squeeze(0)
+    return out
