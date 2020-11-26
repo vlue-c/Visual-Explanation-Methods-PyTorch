@@ -193,7 +193,7 @@ mp = mp_generator(image, target)
 ## SmoothGrad
 - **SmoothGrad**
   - ***not VERIFIED***
-  - paper (*arXiv preprint*): [SmoothGrad: removing noise by adding noise](https://arxiv.org/abs/1706.03825)
+  - paper (*arXiv preprint* 2017): [SmoothGrad: removing noise by adding noise](https://arxiv.org/abs/1706.03825)
   - original source code: https://github.com/pair-code/saliency
 
 | functionality | progress |
