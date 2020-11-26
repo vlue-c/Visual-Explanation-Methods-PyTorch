@@ -2,11 +2,11 @@ import random
 import torch
 from torch.nn.functional import interpolate
 from torchvision.transforms.functional import gaussian_blur
+from torchvision.transforms import Lambda
 
 
 def gaussian_filter(image, sigma=10, truncate=4.0):
-    radius = int(truncate * sigma + 0.5)
-    radius += (radius-1) % 2
+    radius = int(truncate * sigma + 0.5) * 2 + 1
     return gaussian_blur(image, radius, sigma)
 
 
@@ -38,9 +38,9 @@ def total_variation(inputs, beta=1):
 
 
 class MeaningfulPerturbation(torch.nn.Module):
-    def __init__(self, model, num_iters=300, lr=1e-1, l1_lambda=1e-4, jitter=4,
-                 tv_beta=3, tv_lambda=1e-2, mask_scale=8, noise=0,
-                 blur_mask_sigma=5, blur_image_sigma=10):
+    def __init__(self, model, normalize_transform, num_iters=300, lr=1e-1,
+                 l1_lambda=1e-4, jitter=4, tv_beta=3, tv_lambda=1e-2,
+                 mask_scale=8, noise=0, blur_mask_sigma=5, blur_image_sigma=10):
         super().__init__()
         self.model = model
         self.niters = num_iters
@@ -53,6 +53,17 @@ class MeaningfulPerturbation(torch.nn.Module):
         self.jitter = jitter
         self.sd = blur_image_sigma
         self.noise = noise
+
+        self.norm = normalize_transform
+
+    def denormalize(self, x):
+        mean = torch.as_tensor(
+            self.norm.mean, device=x.device, dtype=x.dtype
+        ).view(1, 3, 1, 1)
+        std = torch.as_tensor(
+            self.norm.std, device=x.device, dtype=x.dtype
+        ).view(1, 3, 1, 1)
+        return x * std + mean
 
     def _initialize_mask(self, image, blurred_image, target):
         original_score = self.model(image)[0, target]
@@ -80,9 +91,13 @@ class MeaningfulPerturbation(torch.nn.Module):
         initial_mask.clamp_(0, 1)
         return 1 - initial_mask
 
-    def _forward(self, inputs, blurred_inputs, target=None):
+    def _forward(self, inputs, target=None):
         if target is None:
             target = self.model(inputs).argmax(1)
+
+        blurred_inputs = self.norm(gaussian_filter(
+            self.denormalize(inputs), self.sd
+        ))
 
         mask = self._initialize_mask(inputs, blurred_inputs, target)
         j = self.jitter
@@ -146,6 +161,6 @@ class MeaningfulPerturbation(torch.nn.Module):
             )
         if self.blur_sigma > 0:
             mask = gaussian_filter(mask, self.blur_sigma)
-        return mask.data
+        return 1 - mask.data
 
     forward = _forward
