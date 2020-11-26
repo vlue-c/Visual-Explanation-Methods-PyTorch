@@ -34,8 +34,8 @@ optional
 | --- | --- |
 | `Higher order derivative` | :heavy_check_mark: |
 | `Batch processing` | :heavy_check_mark: |
-| `Post processing` | :bug: |
-| `Pre processing` | :x: |
+| `Post processing` | :heavy_check_mark: |
+| `Pre processing` | :heavy_check_mark: |
 
 Expample: 
 ```python
@@ -62,8 +62,8 @@ cam = cam_generator(image, target)
 | --- | --- |
 | `Higher order derivative` | :heavy_check_mark: |
 | `Batch processing` | :heavy_check_mark: |
-| `Post processing` | :bug: |
-| `Pre processing` | :x: |
+| `Post processing` | :heavy_check_mark: |
+| `Pre processing` | :heavy_check_mark: |
 
 Example:
 ```python
@@ -89,7 +89,7 @@ multiple_grad_cam = multil_layer_gcamgen(image)
 | `Higher order derivative` | :heavy_check_mark: |
 | `Batch processing` | :heavy_check_mark: |
 | `Post processing` | :heavy_check_mark: |
-| `Pre processing` | :x: |
+| `Pre processing` | :heavy_check_mark: |
 
 Example:
 ```python
@@ -124,8 +124,8 @@ simgrad = simgrad_generator(image, target)
 | --- | --- |
 | `Higher order derivative` | :no_good: |
 | `Batch processing` | :heavy_check_mark: |
-| `Post processing` | :x: |
-| `Pre processing` | :x: |
+| `Post processing` | :heavy_check_mark: |
+| `Pre processing` | :heavy_check_mark: |
 
 Example:
 ```python
@@ -154,8 +154,8 @@ rise = rise_generator(image, target)
 | --- | --- |
 | `Higher order derivative` | :no_good: |
 | `Batch processing` | :x: |
-| `Post processing` | :x: |
-| `Pre processing` | :x: |
+| `Post processing` | :heavy_check_mark: |
+| `Pre processing` | :heavy_check_mark: |
 
 Example:
 ```python
