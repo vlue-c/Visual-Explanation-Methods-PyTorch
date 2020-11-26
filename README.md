@@ -29,13 +29,13 @@ optional
 - **C**lass **A**ctivation **M**apping(*CAM*)
   - paper (*CVPR* 2016): [Learning Deep Features for Discriminative Localization](https://arxiv.org/pdf/1512.04150.pdf)
   - original source code: https://github.com/zhoubolei/CAM
-- Funtionality:
 
-| | |
+| functionality | progress |
 | --- | --- |
 | `Higher order derivative` | :heavy_check_mark: |
 | `Batch processing` | :heavy_check_mark: |
-| `post processing` | :x: |
+| `Post processing` | :bug: |
+| `Pre processing` | :x: |
 
 Expample: 
 ```python
@@ -58,6 +58,13 @@ cam = cam_generator(image, target)
   - paper (*ICCV* 2017): [Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization](https://openaccess.thecvf.com/content_iccv_2017/html/Selvaraju_Grad-CAM_Visual_Explanations_ICCV_2017_paper.html)
   - original source code: ***TBD***
 
+| functionality | progress |
+| --- | --- |
+| `Higher order derivative` | :heavy_check_mark: |
+| `Batch processing` | :heavy_check_mark: |
+| `Post processing` | :bug: |
+| `Pre processing` | :x: |
+
 Example:
 ```python
 from torchex import GradCAM
@@ -76,6 +83,13 @@ multiple_grad_cam = multil_layer_gcamgen(image)
 - ![](https://latex.codecogs.com/svg.latex?SimpleGradient=\frac{\partial%20M(x)_c}{\partial%20x})
 
 - where *M* is model, *c* is target class, *x* is input image.
+
+| functionality | progress |
+| --- | --- |
+| `Higher order derivative` | :heavy_check_mark: |
+| `Batch processing` | :heavy_check_mark: |
+| `Post processing` | :heavy_check_mark: |
+| `Pre processing` | :x: |
 
 Example:
 ```python
@@ -106,6 +120,13 @@ simgrad = simgrad_generator(image, target)
   - paper (*BMVC*, 2018): [RISE: Randomized Input Sampling for Explanation of Black-box Models](https://arxiv.org/abs/1806.07421)
   - original source code: https://github.com/eclique/RISE
 
+| functionality | progress |
+| --- | --- |
+| `Higher order derivative` | :no_good: |
+| `Batch processing` | :heavy_check_mark: |
+| `Post processing` | :x: |
+| `Pre processing` | :x: |
+
 Example:
 ```python
 from torchex import RISE
@@ -116,4 +137,45 @@ rise_generator = RISE(model, num_masks=8000, cell_size=7,
 
 rise = rise_generator(image)
 rise = rise_generator(image, target)
+```
+
+## Meaningful Perturbation
+- Interpretable Explanations of Black Boxes by **Meaningful Perturbation**
+  - The result of this code is fairly different from original source code. Because:
+    - Caffe model :left_right_arrow: PyTorch model
+    - Scipy gaussian filtering :left_right_arrow: torchvision gaussian blurring
+    - Native resize :left_right_arrow: pytorch interpolate
+  - But it is more numerically stable (with `torch.autograd`) and faster.
+    - original code: 3 min. :left_right_arrow: this code 10 sec. (with Titan XP, Intel(R) Xeon(R) CPU E5-2640 v3 @ 2.60GHz)
+  - paper (*ICCV* 2017): [Interpretable Explanations of Black Boxes by Meaningful Perturbation](https://openaccess.thecvf.com/content_iccv_2017/html/Fong_Interpretable_Explanations_of_ICCV_2017_paper.html)
+  - original source code: https://github.com/ruthcfong/perturb_explanations
+
+| functionality | progress |
+| --- | --- |
+| `Higher order derivative` | :no_good: |
+| `Batch processing` | :x: |
+| `Post processing` | :x: |
+| `Pre processing` | :x: |
+
+Example:
+```python
+from torchvision import transforms as T
+from torchex import MeaningfulPerturbation
+
+# if Normalization is needed
+normalization = T.Normalize(MEAN, STD)
+transform = T.Compose([
+    TransformA(),
+    TransformB(),
+    ...,
+    normalization
+])
+# else
+normalization = None
+
+dataset = Dataset(..., transform=transform)
+mp_generator = MeaningfulPerturbation(model, normalization)
+
+mp = mp_generator(image)
+mp = mp_generator(image, target)
 ```

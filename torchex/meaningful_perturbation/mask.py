@@ -2,7 +2,6 @@ import random
 import torch
 from torch.nn.functional import interpolate
 from torchvision.transforms.functional import gaussian_blur
-from torchvision.transforms import Lambda
 
 
 def gaussian_filter(image, sigma=10, truncate=4.0):
@@ -38,7 +37,7 @@ def total_variation(inputs, beta=1):
 
 
 class MeaningfulPerturbation(torch.nn.Module):
-    def __init__(self, model, normalize_transform, num_iters=300, lr=1e-1,
+    def __init__(self, model, normalize_transform=None, num_iters=300, lr=1e-1,
                  l1_lambda=1e-4, jitter=4, tv_beta=3, tv_lambda=1e-2,
                  mask_scale=8, noise=0, blur_mask_sigma=5, blur_image_sigma=10):
         super().__init__()
@@ -58,11 +57,9 @@ class MeaningfulPerturbation(torch.nn.Module):
 
     def denormalize(self, x):
         mean = torch.as_tensor(
-            self.norm.mean, device=x.device, dtype=x.dtype
-        ).view(1, 3, 1, 1)
+            self.norm.mean, device=x.device, dtype=x.dtype).view(1, 3, 1, 1)
         std = torch.as_tensor(
-            self.norm.std, device=x.device, dtype=x.dtype
-        ).view(1, 3, 1, 1)
+            self.norm.std, device=x.device, dtype=x.dtype).view(1, 3, 1, 1)
         return x * std + mean
 
     def _initialize_mask(self, image, blurred_image, target):
@@ -86,7 +83,7 @@ class MeaningfulPerturbation(torch.nn.Module):
         if self.mask_scale > 0:
             initial_mask = interpolate(
                 initial_mask, scale_factor=1 / self.mask_scale,
-                mode='nearest'
+                mode='nearest', recompute_scale_factor=False
             )
         initial_mask.clamp_(0, 1)
         return 1 - initial_mask
@@ -95,9 +92,12 @@ class MeaningfulPerturbation(torch.nn.Module):
         if target is None:
             target = self.model(inputs).argmax(1)
 
-        blurred_inputs = self.norm(gaussian_filter(
-            self.denormalize(inputs), self.sd
-        ))
+        if self.norm is not None:
+            blurred_inputs = self.norm(gaussian_filter(
+                self.denormalize(inputs), self.sd
+            ))
+        else:
+            blurred_inputs = gaussian_filter(inputs, self.sd)
 
         mask = self._initialize_mask(inputs, blurred_inputs, target)
         j = self.jitter
@@ -136,7 +136,8 @@ class MeaningfulPerturbation(torch.nn.Module):
 
             if self.mask_scale > 0:
                 mask_inter = interpolate(
-                    mask_inter, scale_factor=self.mask_scale, mode='nearest'
+                    mask_inter, scale_factor=self.mask_scale, mode='nearest',
+                    recompute_scale_factor=False
                 )
             if self.blur_sigma > 0:
                 mask_inter = gaussian_filter(mask_inter, self.blur_sigma)
@@ -157,7 +158,8 @@ class MeaningfulPerturbation(torch.nn.Module):
 
         if self.mask_scale > 0:
             mask = interpolate(
-                mask, scale_factor=self.mask_scale, mode='nearest'
+                mask, scale_factor=self.mask_scale, mode='nearest',
+                recompute_scale_factor=False
             )
         if self.blur_sigma > 0:
             mask = gaussian_filter(mask, self.blur_sigma)
