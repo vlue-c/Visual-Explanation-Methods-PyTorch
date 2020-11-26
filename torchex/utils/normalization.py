@@ -38,7 +38,7 @@ def denormalize(data, mean, std):
                          f'len(std): {len(std)}.')
     mean = torch.as_tensor(mean, device=data.device, dtype=data.dtype)
     std = torch.as_tensor(std, device=data.device, dtype=data.dtype)
-    mean, std = mean.view(1, nchannels, 1, 1), std.view(1, nchannels, 1, 1)
+    mean, std = mean.view(1, -1, 1, 1), std.view(1, -1, 1, 1)
 
     out = data * std + mean
     if ndim_before == 3:
