@@ -141,14 +141,14 @@ rise = rise_generator(image, target)
 
 ## Meaningful Perturbation
 - Interpretable Explanations of Black Boxes by **Meaningful Perturbation**
+  - paper (*ICCV* 2017): [Interpretable Explanations of Black Boxes by Meaningful Perturbation](https://openaccess.thecvf.com/content_iccv_2017/html/Fong_Interpretable_Explanations_of_ICCV_2017_paper.html)
+  - original source code: https://github.com/ruthcfong/perturb_explanations
   - The result of this code is fairly different from original source code. Because:
     - Caffe model :left_right_arrow: PyTorch model
     - Scipy gaussian filtering :left_right_arrow: torchvision gaussian blurring
     - Native resize :left_right_arrow: pytorch interpolate
   - But it is more numerically stable (with `torch.autograd`) and faster.
     - original code: 3 min. :left_right_arrow: this code 10 sec. (with Titan XP, Intel(R) Xeon(R) CPU E5-2640 v3 @ 2.60GHz)
-  - paper (*ICCV* 2017): [Interpretable Explanations of Black Boxes by Meaningful Perturbation](https://openaccess.thecvf.com/content_iccv_2017/html/Fong_Interpretable_Explanations_of_ICCV_2017_paper.html)
-  - original source code: https://github.com/ruthcfong/perturb_explanations
 
 | functionality | progress |
 | --- | --- |
