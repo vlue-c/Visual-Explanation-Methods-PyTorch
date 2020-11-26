@@ -2,6 +2,10 @@
 
 ## Re-implemented model explanation method codes for PyTorch.
 
+- PyTorch friendly
+- More utilization of GPU.
+- Higher-order derivative friendly
+- Batch processing
 
 ## Usage
 
@@ -25,6 +29,10 @@ optional
 - **C**lass **A**ctivation **M**apping(*CAM*)
   - paper (*CVPR* 2016): [Learning Deep Features for Discriminative Localization](https://arxiv.org/pdf/1512.04150.pdf)
   - original source code: https://github.com/zhoubolei/CAM
+- Funtionality:
+
+| `Higher order derivative` | :heavy_check_mark: |
+| `Batch processing` | :heavy_check_mark: |
 
 Expample: 
 ```python
