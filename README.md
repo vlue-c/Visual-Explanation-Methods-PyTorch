@@ -55,7 +55,7 @@ cam = cam_generator(image, target)
 
 Result:
 
-torchvex/cam/cat_dog.jpg (I don't know where the source is this image.)
+torchvex/cam/cat_dog.jpg (I don't know where this image comes from.)
 
 ![cam_example](torchvex/cam/cam_example.png)
 
@@ -86,7 +86,7 @@ multiple_grad_cam = multil_layer_gcamgen(image)
 
 Results:
 
-torchvex/cam/cat_dog.jpg (I don't know where the source is this image.)
+torchvex/cam/cat_dog.jpg (I don't know where this image comes from.)
 
 ![gradcam_example](torchvex/cam/gradcam_example.png)
 
