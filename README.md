@@ -40,7 +40,7 @@ optional
 Expample: 
 ```python
 from torchvision.models import resnet50
-from torchex import CAM
+from torchvex import CAM
 
 # in case of torchvision.models.resnet,
 # the output of the model.layer4 is equals to
@@ -67,7 +67,7 @@ cam = cam_generator(image, target)
 
 Example:
 ```python
-from torchex import GradCAM
+from torchvex import GradCAM
 model = ...
 grad_cam_generator = GradCAM(model, target_layer=model.layer4)
 multil_layer_gcamgen = GradCAM(model, target_layer=[model.layer3, model.layer4])
@@ -106,7 +106,7 @@ multiple_grad_cam = multil_layer_gcamgen(image)
 
 Example:
 ```python
-from torchex import RISE
+from torchvex import RISE
 
 model = ...
 rise_generator = RISE(model, num_masks=8000, cell_size=7,
@@ -139,7 +139,7 @@ rise = rise_generator(image, target)
 Example:
 ```python
 from torchvision import transforms as T
-from torchex import MeaningfulPerturbation
+from torchvex import MeaningfulPerturbation
 
 # if Normalization is needed
 normalization = T.Normalize(MEAN, STD)
@@ -163,7 +163,7 @@ Result:
 
 {ImageNet}/***train***/n03372029/n03372029_42103.JPEG
 
-![meanpert_example](torchex/meaningful_perturbation/meaningful_perturbation_example.png)
+![meanpert_example](torchvex/meaningful_perturbation/meaningful_perturbation_example.png)
 
 
 ---
@@ -182,7 +182,7 @@ Result:
 
 Example:
 ```python
-from torchex import SimpleGradient
+from torchvex import SimpleGradient
 
 def clip_gradient(gradient):
   gradient = gradient.abs().sum(1, keepdim=True)
@@ -207,7 +207,7 @@ Result:
 
 {ImageNet}/val/n02423022/ILSVRC2012_val_00046413.JPEG
 
-![simplegrad_example](torchex/simple_grad/simgrad_example.png)
+![simplegrad_example](torchvex/simple_grad/simgrad_example.png)
 
 ---
 
@@ -225,8 +225,8 @@ Result:
 
 Example:
 ```python
-from torchex import SmoothGradient
-from torchex.utils import min_max_normalization
+from torchvex import SmoothGradient
+from torchvex.utils import min_max_normalization
 
 def postprocess(gradient):
     gradient = gradient.abs().sum(1, keepdim=True)
@@ -249,9 +249,9 @@ Result:
 {ImageNet}/val/n02423022/ILSVRC2012_val_00046413.JPEG:q
 
 `magnitude = True`
-![smooth_grad_example_mag_True](./torchex/smooth_grad/smoothgrad_example.png)
+![smooth_grad_example_mag_True](./torchvex/smooth_grad/smoothgrad_example.png)
 
 `magnitude = False`
-![smooth_grad_example_mag_False](torchex/smooth_grad/smoothgrad_exmample_magfalse.png)
+![smooth_grad_example_mag_False](torchvex/smooth_grad/smoothgrad_exmample_magfalse.png)
 
 ---

@@ -2,10 +2,10 @@ from setuptools import find_packages
 from setuptools import setup
 
 setup(
-    name='torchex',
+    name='torchvex',
     version='0.1',
     author='hslee',
     url=None,
-    description='Re-implemented explanation methods for PyTorch',
+    description='Visual explanation methods for PyTorch.',
     packages=find_packages(), # exclude()
 )
