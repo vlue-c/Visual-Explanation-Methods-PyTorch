@@ -1,7 +1,6 @@
-# PyTorch-Explanations
+# torchvex
 
-## Re-implemented model explanation method codes for PyTorch.
-
+## Visual Explanation Methods for pyTorch
 - PyTorch friendly
 - More utilization of GPU.
 - Higher-order derivative friendly
