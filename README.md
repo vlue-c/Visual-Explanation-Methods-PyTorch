@@ -81,35 +81,6 @@ multiple_grad_cam = multil_layer_gcamgen(image)
 
 ---
 
-## Simple Gradient
-- ![](https://latex.codecogs.com/svg.latex?SimpleGradient=\frac{\partial%20M(x)_c}{\partial%20x})
-
-- where *M* is model, *c* is target class, *x* is input image.
-
-| functionality | progress |
-| --- | --- |
-| `Higher order derivative` | :heavy_check_mark: |
-| `Batch processing` | :heavy_check_mark: |
-| `Post processing` | :heavy_check_mark: |
-| `Pre processing` | :heavy_check_mark: |
-
-Example:
-```python
-from torchex import SimpleGradient
-
-def normalize_gradient(gradient):
-  nbatchs, nchannels, w, h = gradient.shape
-  return w * h * gradient / gradient.sum()
-
-model = ...
-simgrad_generator = SimpleGradient(model, post_process=normalize_gradient)
-
-simgrad = simgrad_generator(image)
-simgrad = simgrad_generator(image, target)
-```
-
----
-
 ## DeepLift
 
 - **Deep** **L**earning **I**mportant **F**ea**T**ures
@@ -193,6 +164,51 @@ Result:
 {ImageNet}/***train***/n03372029/n03372029_42103.JPEG
 
 ![meanpert_example](torchex/meaningful_perturbation/meaningful_perturbation_example.png)
+
+
+---
+
+## Simple Gradient
+- ![](https://latex.codecogs.com/svg.latex?SimpleGradient=\frac{\partial%20M(x)_c}{\partial%20x})
+
+- where *M* is model, *c* is target class, *x* is input image.
+
+| functionality | progress |
+| --- | --- |
+| `Higher order derivative` | :heavy_check_mark: |
+| `Batch processing` | :heavy_check_mark: |
+| `Post processing` | :heavy_check_mark: |
+| `Pre processing` | :heavy_check_mark: |
+
+Example:
+```python
+from torchex import SimpleGradient
+
+def clip_gradient(gradient):
+  gradient = gradient.abs().sum(1, keepdim=True)
+  maxclip = torch.quantile(gradient, q=0.99)
+  return gradient.clamp(0, maxclip)
+
+def normalize_gradient(gradient):
+  gradient = gradient.abs().sum(1, keepdim=True)
+  nbatchs, nchannels, w, h = gradient.shape
+  return w * h * gradient / gradient.sum()
+
+model = ...
+simgrad_generator = SimpleGradient(model, post_process=clip_gradient)
+
+simgrad = simgrad_generator(image)
+simgrad = simgrad_generator(image, target)
+```
+
+Result:
+
+{ImageNet}/val/ILSVRC2012_val_00046413.JPEG or
+
+{ImageNet}/val/n02423022/ILSVRC2012_val_00046413.JPEG
+
+![simplegrad_example](torchex/simple_grad/simgrad_example.png)
+
 
 
 ---
