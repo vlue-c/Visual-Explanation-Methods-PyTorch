@@ -192,7 +192,7 @@ Result:
 
 {ImageNet}/***train***/n03372029/n03372029_42103.JPEG
 
-![smooth_grad_example](torchex/meaningful_perturbation/meaningful_perturbation_example.png)
+![meanpert_example](torchex/meaningful_perturbation/meaningful_perturbation_example.png)
 
 
 ---
