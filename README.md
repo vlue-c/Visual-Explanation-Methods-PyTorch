@@ -209,8 +209,6 @@ Result:
 
 ![simplegrad_example](torchex/simple_grad/simgrad_example.png)
 
-
-
 ---
 
 ## SmoothGrad
@@ -248,8 +246,12 @@ Result:
 
 {ImageNet}/val/ILSVRC2012_val_00046413.JPEG or
 
-{ImageNet}/val/n02423022/ILSVRC2012_val_00046413.JPEG
+{ImageNet}/val/n02423022/ILSVRC2012_val_00046413.JPEG:q
 
-![smooth_grad_example](./torchex/smooth_grad/smoothgrad_example.png)
+`magnitude = True`
+![smooth_grad_example_mag_True](./torchex/smooth_grad/smoothgrad_example.png)
+
+`magnitude = False`
+![smooth_grad_example_mag_False](torchex/smooth_grad/smoothgrad_exmample_magfalse.png)
 
 ---
