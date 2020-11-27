@@ -188,6 +188,13 @@ mp = mp_generator(image)
 mp = mp_generator(image, target)
 ```
 
+Result:
+
+{ImageNet}/***train***/n03372029/n03372029_42103.JPEG
+
+![smooth_grad_example](torchex/meaningful_perturbation/meaningful_perturbation_example.png)
+
+
 ---
 
 ## SmoothGrad
@@ -220,6 +227,13 @@ smoothgrad_gen = SmoothGradient(
 smoothg = smoothgrad_gen(image)
 smoothg = smoothgrad_gen(image, target)
 ```
+
+Result:
+
+{ImageNet}/val/ILSVRC2012_val_00046413.JPEG or
+
+{ImageNet}/val/n02423022/ILSVRC2012_val_00046413.JPEG
+
 ![smooth_grad_example](./torchex/smooth_grad/smoothgrad_example.png)
 
 ---
