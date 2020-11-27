@@ -194,11 +194,11 @@ Result:
 Example:
 ```python
 from torchvex import SimpleGradient
+from torchvex import clamp_quantile
 
 def clip_gradient(gradient):
   gradient = gradient.abs().sum(1, keepdim=True)
-  maxclip = torch.quantile(gradient, q=0.99)
-  return gradient.clamp(0, maxclip)
+  return clamp_quantile(gradient, q=0.99)
 
 def normalize_gradient(gradient):
   gradient = gradient.abs().sum(1, keepdim=True)
@@ -237,12 +237,11 @@ Result:
 Example:
 ```python
 from torchvex import SmoothGradient
-from torchvex.utils import min_max_normalization
+from torchvex import clamp_quantile
 
-def postprocess(gradient):
-    gradient = gradient.abs().sum(1, keepdim=True)
-    gradient = min_max_normalization(gradient, dim=(1, 2, 3), q=0.99)
-    return gradient
+def clip_gradient(gradient):
+  gradient = gradient.abs().sum(1, keepdim=True)
+  return clamp_quantile(gradient, q=0.99)
 
 smoothgrad_gen = SmoothGradient(
     model, num_samples=50, stdev_spread=0.1,

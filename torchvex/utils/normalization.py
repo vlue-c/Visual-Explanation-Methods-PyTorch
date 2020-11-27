@@ -2,18 +2,25 @@ from numbers import Number
 import torch
 
 
-def min_max_normalization(data, dim=None, q=(0, 1)):
+def clamp_quantile(data, q):
     if isinstance(q, Number):
         q = (0, q)
-    if dim is None:
-        dim = list(range(data.ndim))
-    if isinstance(dim, Number):
-        dim = (dim, )
 
     if q != (0, 1):
         min_clip = torch.quantile(data, q[0])
         max_clip = torch.quantile(data, q[1])
         data = data.clamp(min_clip, max_clip)
+
+    return data
+
+
+def min_max_normalization(data, dim=None, q=(0, 1)):
+    if dim is None:
+        dim = list(range(data.ndim))
+    elif isinstance(dim, Number):
+        dim = (dim, )
+
+    data = clamp_quantile(data, q)
 
     minima = data.clone()
     maxima = data.clone()
