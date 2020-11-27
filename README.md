@@ -212,7 +212,10 @@ def postprocess(gradient):
     gradient = min_max_normalization(gradient, dim=(1, 2, 3), q=0.99)
     return gradient
 
-smoothgrad_gen = SmoothGradient(model, postprocess=postprocess)
+smoothgrad_gen = SmoothGradient(
+    model, num_samples=50, stdev_spread=0.1,
+    magnitude=True, postprocess=postprocess
+)
 
 smoothg = smoothgrad_gen(image)
 smoothg = smoothgrad_gen(image, target)
