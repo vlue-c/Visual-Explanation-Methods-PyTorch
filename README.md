@@ -53,6 +53,12 @@ cam = cam_generator(image)
 cam = cam_generator(image, target)
 ```
 
+Result:
+
+torchvex/cam/cat_dog.jpg (I don't know where the source is this image.)
+
+![cam_example](torchvex/cam/cam_example.png)
+
 - **Grad**ient-weighted **C**lass **A**ctivation **M**apping(*Grad-CAM*)
   - paper (*ICCV* 2017): [Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization](https://openaccess.thecvf.com/content_iccv_2017/html/Selvaraju_Grad-CAM_Visual_Explanations_ICCV_2017_paper.html)
   - original source code: ***TBD***
@@ -77,6 +83,12 @@ grad_cam = grad_cam_generator(image, target)
 multiple_grad_cam = multil_layer_gcamgen(image)
 # multiple_grad_cam.shape: torch.Size([2, 1, image.size(-2), image.size(-1)])
 ```
+
+Results:
+
+torchvex/cam/cat_dog.jpg (I don't know where the source is this image.)
+
+![gradcam_example](torchvex/cam/gradcam_example.png)
 
 ---
 
@@ -245,7 +257,7 @@ Result:
 
 {ImageNet}/val/ILSVRC2012_val_00046413.JPEG or
 
-{ImageNet}/val/n02423022/ILSVRC2012_val_00046413.JPEG:q
+{ImageNet}/val/n02423022/ILSVRC2012_val_00046413.JPEG
 
 `magnitude = True`
 ![smooth_grad_example_mag_True](./torchvex/smooth_grad/smoothgrad_example.png)
