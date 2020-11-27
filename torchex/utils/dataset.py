@@ -1,6 +1,6 @@
 import os
 import torch
-from torch.utils.data import Subset
+from torch.utils.data import Subset, Dataset
 from torchvision import transforms as T
 
 IMAGENET_MEAN = torch.as_tensor([0.485, 0.456, 0.406])
@@ -33,3 +33,24 @@ def make_subset_from_fnames(dset, fnames):
         indices.append(paths.index(os.path.basename(fname)))
 
     return Subset(dset, indices)
+
+
+class Pairset(Dataset):
+    def __init__(self, *datasets, transform=None):
+        super().__init__()
+        lengths = list(map(len, datasets))
+        if not all(lengths[0] == length for length in lengths):
+            raise ValueError(f'length of each dataset is not same {lengths}')
+        self.datasets = datasets
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.datasets[0])
+
+    def __getitem__(self, idx):
+        samples = [dset[idx] for dset in self.datasets]
+
+        if self.transform is not None:
+            sample = self.transform(samples)
+
+        return sample
