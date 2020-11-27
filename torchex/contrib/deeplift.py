@@ -6,8 +6,7 @@ from torchex.base import ExplanationMethod
 
 class DeepLift(ExplanationMethod):
     def __init__(self, model, baseline=None, preprocess=None, postprocess=None):
-        super().__init__(preprocess, postprocess)
-        self.model = model
+        super().__init__(model, preprocess, postprocess)
         self.attributor = _DeepLift(model)
         self.baseline = baseline
 

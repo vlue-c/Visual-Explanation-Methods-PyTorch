@@ -14,19 +14,12 @@ class GradCAM(_CAMBase):
         super().__init__(model, target_layer, create_graph, interpolate)
 
     @torch.enable_grad()
-    def create_cam(self, inputs, target=None):
+    def create_cam(self, inputs, target):
         self.model.zero_grad()
         inputs.requires_grad_(True)
 
         with FeatureFetcher(self.target_layer) as fetcher:
             output = self.model(inputs)
-
-        if target is None:
-            _, target = output.max(1)[1]
-        if isinstance(target, Number):
-            target = [target]
-        if not isinstance(target, torch.Tensor):
-            target = torch.tensor(target)
 
         onehot = index_to_onehot(target, output.shape[-1])
         loss = (output * onehot).sum()

@@ -44,8 +44,7 @@ class MeaningfulPerturbation(ExplanationMethod):
                  preprocess=None, postprocess=None, num_iters=300, lr=1e-1,
                  l1_lambda=1e-4, jitter=4, tv_beta=3, tv_lambda=1e-2,
                  mask_scale=8, noise=0, blur_mask_sigma=5, blur_image_sigma=10):
-        super().__init__(preprocess, postprocess)
-        self.model = model
+        super().__init__(model, preprocess, postprocess)
         self.niters = num_iters
         self.lr = lr
         self.l1_l = l1_lambda
@@ -85,10 +84,7 @@ class MeaningfulPerturbation(ExplanationMethod):
         initial_mask.clamp_(0, 1)
         return 1 - initial_mask
 
-    def process(self, inputs, target=None):
-        if target is None:
-            target = self.model(inputs).argmax(1)
-
+    def process(self, inputs, target):
         if self.norm is not None:
             blurred_inputs = self.norm(gaussian_filter(
                 denormalize(inputs, self.norm.mean, self.norm.std), self.sd

@@ -8,6 +8,7 @@ from torch.nn import functional as F
 from torch.utils.data import Dataset, DataLoader
 
 from torchex.utils import DummyPbar
+from torchex.base import ExplanationMethod
 
 
 class RandomMaskSampler(Dataset):
@@ -51,11 +52,11 @@ class RandomMaskSampler(Dataset):
         return mask
 
 
-class RISE(torch.nn.Module):
+class RISE(ExplanationMethod):
     def __init__(self, model, num_masks=8000, cell_size=7,
-                 probability=0.5, batch_size=1000, progress=False):
-        super().__init__()
-        self.model = model
+                 probability=0.5, batch_size=1000, progress=False,
+                 preprocess=None, postprocess=None):
+        super().__init__(model, preprocess, postprocess)
         self.nmasks = num_masks
         self.cell_size = cell_size
         self.p = probability
@@ -63,10 +64,7 @@ class RISE(torch.nn.Module):
         self.get_pbar = tqdm if progress else DummyPbar
 
     @torch.no_grad()
-    def forward(self, inputs, targets=None):
-        if targets is None:
-            targets = self.model(inputs).max(1)[1]
-
+    def process(self, inputs, targets):
         device = inputs.device
         imsize = inputs.shape[-1]
         half = (inputs.dtype == torch.half)

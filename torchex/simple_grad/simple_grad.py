@@ -6,21 +6,18 @@ from torchex.base import ExplanationMethod
 class SimpleGradient(ExplanationMethod):
     def __init__(self, model, create_graph=False,
                  preprocess=None, postprocess=None):
-        super().__init__(preprocess, postprocess)
-        self.model = model
+        super().__init__(model, preprocess, postprocess)
         self.create_graph = create_graph
 
     def predict(self, x):
         return self.model(x)
 
     @torch.enable_grad()
-    def process(self, inputs, target=None):
+    def process(self, inputs, target):
         self.model.zero_grad()
         inputs.requires_grad_(True)
 
         out = self.model(inputs)
-        if target is None:
-            target = out.max(1)[1]
 
         num_classes = out.size(-1)
         onehot = torch.zeros(inputs.size(0), num_classes, *target.shape[1:])

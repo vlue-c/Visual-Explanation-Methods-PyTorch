@@ -6,8 +6,7 @@ from torchex.base import ExplanationMethod
 class _CAMBase(ExplanationMethod):
     def __init__(self, model, target_layer, create_graph=False,
                  interpolate=True, preprocess=None, postprocess=None):
-        super().__init__(preprocess, postprocess)
-        self.model = model
+        super().__init__(model, preprocess, postprocess)
         self.target_layer = target_layer
 
         self.create_graph = create_graph
@@ -32,12 +31,11 @@ class _CAMBase(ExplanationMethod):
         return self.create_cam(inputs, target)
 
     @torch.no_grad()
-    def process(self, inputs, target=None):
-        if target is None:
-            target = self.model(inputs).max(1)[1]
+    def process(self, inputs, target):
         if self.create_graph:
             results = self.enable_grad_forward(inputs, target)
-        results = self.no_grad_forward(inputs, target)
+        else:
+            results = self.no_grad_forward(inputs, target)
 
         if self._interpolate:
             results = [self.interpolate(result, inputs.shape[-1])

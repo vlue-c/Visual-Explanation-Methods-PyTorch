@@ -12,16 +12,9 @@ class CAM(_CAMBase):
                          preprocess, postprocess)
         self.fc = fc_layer
 
-    def create_cam(self, inputs, target=None):
+    def create_cam(self, inputs, target):
         with FeatureFetcher(self.target_layer) as fetcher:
-            output = self.model(inputs)
-
-        if target is None:
-            _, target = output.max(1)
-        if isinstance(target, Number):
-            target = [target]
-        if not isinstance(target, torch.Tensor):
-            target = torch.as_tensor(target)
+            _ = self.model(inputs)
 
         weight = self.fc.weight
 
