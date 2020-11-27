@@ -192,7 +192,6 @@ mp = mp_generator(image, target)
 
 ## SmoothGrad
 - **SmoothGrad**
-  - ***not VERIFIED***
   - paper (*arXiv preprint* 2017): [SmoothGrad: removing noise by adding noise](https://arxiv.org/abs/1706.03825)
   - original source code: https://github.com/pair-code/saliency
 
@@ -218,3 +217,6 @@ smoothgrad_gen = SmoothGradient(model, postprocess=postprocess)
 smoothg = smoothgrad_gen(image)
 smoothg = smoothgrad_gen(image, target)
 ```
+![smooth_grad_example](./torchex/smooth_grad/smoothgrad_example.png)
+
+---
